@@ -4,10 +4,28 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { createBrowserHistory } from 'history'
+import { routerMiddleware } from 'react-router-redux';
+import thunk from 'redux-thunk';
+import reducers from './reducers';
+
+const history = createBrowserHistory();
+const middleware = [routerMiddleware(history),thunk];
+
+const store = createStore(
+  reducers,
+  applyMiddleware(...middleware)
+);
+
+
 ReactDOM.render(
+  <Provider store={ store }>
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App history={ history } />
+  </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
